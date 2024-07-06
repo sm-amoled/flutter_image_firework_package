@@ -88,3 +88,8 @@ You can call the àddFireworkWidget` function at the end of another animation li
 # Example Animation
 I create one example code like this. You can check the code at the 'example' tab. 
 
+You can make combination of image(emoji) at the bottom of the view. And when you tap the upper area, then the adding firework function called, and animation will be appear at the point you tapped.
+
+![](https://github.com/sm-amoled/flutter_image_firework_package/blob/main/assets/image_firework_gif.gif?raw=tru)
+
+
