@@ -46,6 +46,7 @@ import 'package:flutter/material.dart';
 ///
 ///
 class ImageFireWorkManager {
+  /// initializer of Image Firework Manager
   ImageFireWorkManager({
     required this.animatingImageUriList,
     this.imageAmount = 30,
@@ -61,18 +62,41 @@ class ImageFireWorkManager {
   });
 
   // properties
+  /// - imageAmount: Minimum number of images - default is 30
   final int imageAmount;
-  late Map<Key, FireworkWidget> fireworkWidgets = {};
+
+  /// - animatingImageUriList: List of asset images' path in String
   final List<String> animatingImageUriList;
+
+  /// - imageLifetimeDurationSec: Total time (lifetime) the images float on the screen - default is 5 seconds
   final int imageLifetimeDurationSec;
+
+  /// - imageShootDurationSec: Time it takes for the images to burst and spread initially - default is 2 seconds
   final int imageShootDurationSec;
+
+  /// - imageShootingXScale: Degree of spread along the X-axis when the images initially burst - default is 3
   final double imageShootingXScale;
+
+  /// - imageShootingYScale: Degree of spread along the Y-axis when the images initially burst - default is 5
   final double imageShootingYScale;
+
+  /// - imageFloatingXScale: Degree of movement along the X-axis after the images have spread - default is 20
   final double imageFloatingXScale;
+
+  /// - imageFloatingYScale: Degree of movement along the Y-axis after the images have spread - negative values make the images fall down - default is 1
   final double imageFloatingYScale;
+
+  /// - imageSizeDeltaScale: Degree of size fluctuation of the images after spreading - default is 0.3
   final double imageSizeDeltaScale;
+
+  /// - imageTransparentThreshold: Threshold for the images disappearing before the animation ends - higher values keep more images visible until the end, maximum is 1 - default is 0.9
   final double imageTransparentThreshold;
+
+  /// - imageSize: Size of the particle images - default is 40
   final double imageSize;
+
+  /// Container for FireworkWidgets. each element is a particle set of one shot.
+  late Map<Key, FireworkWidget> fireworkWidgets = {};
 
   /// add animating widgets to fireworkWidgets in manager.
   ///
@@ -111,6 +135,7 @@ class ImageFireWorkManager {
     );
   }
 
+  /// remowve every firework widget
   void disposeWidget() {
     fireworkWidgets.forEach((key, value) {
       value.notifyWidgetIsDisposed();
@@ -122,6 +147,7 @@ class ImageFireWorkManager {
 ///
 /// It orchestrates image particles in given random condition.
 class FireworkWidget extends StatefulWidget {
+  /// initializer of Firework Widget
   const FireworkWidget({
     super.key,
     required this.notifyWidgetIsDisposed,
@@ -139,19 +165,48 @@ class FireworkWidget extends StatefulWidget {
     required this.imageSize,
     required this.animatingImageUriList,
   });
+
+  /// Method to notify the end of animation to firework manager.
+  /// And then, the manager can remove this object from managing widget list(map).
   final Function notifyWidgetIsDisposed;
+
+  /// The ingredient ratio of firework effect
   final List<int> animatingImageCountList;
+
+  /// The source images.
   final List<String> animatingImageUriList;
+
+  /// Position where the pop animation starts.
   final Offset offset;
+
+  /// The min number of image particles.
   final int imageAmount;
+
+  ///Total time (lifetime) the images float on the screen
   final int imageLifetimeDurationSec;
+
+  ///Time it takes for the images to burst and spread initially
   final int imageShootDurationSec;
+
+  /// Degree of spread along the X-axis when the images initially burst
   final double imageShootingXScale;
+
+  /// Degree of spread along the Y-axis when the images initially burst
   final double imageShootingYScale;
+
+  /// Degree of movement along the X-axis after the images have spread
   final double imageFloatingXScale;
+
+  /// Degree of movement along the Y-axis after the images have spread
   final double imageFloatingYScale;
+
+  /// Degree of size fluctuation of the images after spreading
   final double imageSizeDeltaScale;
+
+  /// Threshold for the images disappearing before the animation ends - higher values keep more images visible until the end, maximum is 1
   final double imageTransparentThreshold;
+
+  /// Size of the particle images
   final double imageSize;
 
   @override
@@ -354,6 +409,7 @@ extension _FireworkWidgetStateAnimations on _FireworkWidgetState {
 
 /// This widget is each image particle of animation.
 class ImageWidget extends StatefulWidget {
+  /// initalizer for Image Particle
   const ImageWidget({
     super.key,
     required this.imageShootAnimation,
@@ -371,35 +427,45 @@ class ImageWidget extends StatefulWidget {
     required this.imageSize,
   });
 
+  /// Target Asset Image of Particle
   final AssetImage imageAsset;
+
+  /// Animation values for each particles
   final Animation<double> imageShootAnimation,
       imageFloatYAnimation,
       imageFloatXAnimation,
       imageLifeTimeAnimation;
+
+  /// The position of particle
   final Offset offset;
 
-  final double imageShootingXScale;
-  final double imageShootingYScale;
-  final double imageFloatingXScale;
-  final double imageFloatingYScale;
-  final double imageSizeDeltaScale;
-  final double imageTransparentThreshold;
-  final double imageSize;
+  /// The condition for each particle's animating
+  final double imageShootingXScale,
+      imageShootingYScale,
+      imageFloatingXScale,
+      imageFloatingYScale,
+      imageSizeDeltaScale,
+      imageTransparentThreshold,
+      imageSize;
 
   @override
   State<ImageWidget> createState() => ImageWidgetState();
 }
 
-class ImageWidgetState extends State<ImageWidget> {
-  late final double randomScaleX, randomScaleY, distinctiveRandomSeed;
+/// State for Image Particle's animating
 
-  late final double imageShootingXScale;
-  late final double imageShootingYScale;
-  late final double imageFloatingXScale;
-  late final double imageFloatingYScale;
-  late final double imageSizeDeltaScale;
-  late final double imageTransparentThreshold;
-  late final double imageSize;
+class ImageWidgetState extends State<ImageWidget> {
+  /// Variables for Image Particle's animation state.
+  late final double randomScaleX,
+      randomScaleY,
+      distinctiveRandomSeed,
+      imageShootingXScale,
+      imageShootingYScale,
+      imageFloatingXScale,
+      imageFloatingYScale,
+      imageSizeDeltaScale,
+      imageTransparentThreshold,
+      imageSize;
 
   @override
   void initState() {
@@ -466,6 +532,7 @@ class ImageWidgetState extends State<ImageWidget> {
 /// fpdart package contains this method, but to eliminate dependency,
 /// I add this extension below.
 extension IterableExtensions<E> on List<E> {
+  /// Method for iterating List as map with index
   List<T> mapWithIndex<T>(T Function(int index, E element) f) {
     List<T> result = [];
     for (int i = 0; i < length; i++) {
